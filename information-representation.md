@@ -146,3 +146,222 @@ They are **agreements**—rulebooks that let different computers interpret the s
 And once you see that, text stops being mysterious:
 
 It’s just electricity… with a shared dictionary on top.
+
+---
+
+# Number Representation
+
+After understanding how text works (ASCII / UTF-8), I ran into a new confusion:
+
+Why does number representation look *so different*?
+
+The key is that the computer is still storing the same thing as always: **bits** (bulbs on/off).
+What changes is the **meaning we assign to those bits**.
+
+## Two ways to store the “same” thing
+
+Let’s take the number **1024**.
+
+### 1) Storing it as text (characters)
+
+If I store `"1024"` as **text**, I’m not storing the number 1024 directly.
+
+I’m storing four characters:
+
+- `'1'`
+- `'0'`
+- `'2'`
+- `'4'`
+
+In ASCII/UTF-8, each of those characters typically takes **1 byte** (8 bits).
+
+So `"1024"` as text costs:
+
+- 4 characters × 8 bits each = **32 bits**
+
+And notice what the computer “sees”:
+It doesn’t see *one number*.  
+It sees **four separate symbols**, each with its own code.
+
+### 2) Storing it as a number (binary value)
+
+But if my goal is to store the numeric value **one thousand twenty-four**, there’s a more direct approach:
+
+Store the **value itself** in binary.
+
+A binary number uses bits as place values:
+
+- with 1 bit you can represent 2 values
+- with 2 bits you represent 4 values
+- with 10 bits you represent 2¹⁰ = 1024 values (from 0 to 1023)
+- and to represent the value **1024** specifically, you need **11 bits** (because 1024 is 2¹⁰)
+
+So the important correction is:
+
+> 2¹⁰ = 1024 is the *count of values you can represent with 10 bits* (0 to 1023).  
+> To store the number 1024 itself, you need **11 bits**.
+
+Still, the big point remains true:
+
+Storing a number directly in binary is far more compact than storing its digits as characters.
+
+## Why text is “inefficient” for numbers
+
+Text storage is great when your main goal is:
+- to display the number to humans,
+- to send it through text-based protocols,
+- or to write it into a readable file.
+
+But for computation and memory efficiency, it’s wasteful because:
+
+- `"1024"` uses **4 bytes** (at least)
+- while the numeric value 1024 fits in **far fewer bits** (11 bits)
+
+So we’re comparing:
+
+- **Text representation**: stores symbols `'1''0''2''4'`
+- **Numeric representation**: stores the value as a binary magnitude
+
+Same *meaning for us*, very different *meaning for the machine*.
+
+## The deeper lesson
+
+This connects back to the earlier idea:
+
+> Bits have no meaning by themselves.  
+> Meaning depends on interpretation.
+
+The exact same byte pattern could be:
+- the text `"A"`
+- the number 65
+- part of an instruction
+- a pixel color
+
+So when someone says “how many bits does 1024 use?”, you always have to ask:
+
+**Do you mean the text `"1024"`… or the numeric value 1024?**
+
+---
+
+# Image Representation
+
+After text and numbers, images felt like the next big jump.
+
+With text, it’s easy to imagine: a byte pattern becomes a letter because we agree on a table (ASCII / UTF-8). With numbers, the bits *are* the value.
+
+But an image is different. An image isn’t a single symbol or a single value.
+
+An image is a **whole arrangement** of many tiny points in space.
+
+So I needed a new mental picture.
+
+## The screen as a grid of bulbs
+
+A very early and powerful idea is this:
+
+> Imagine the screen as a grid of bulbs.
+
+At the beginning, every bulb is off, so the screen is dark.
+
+Now suppose I create a memory storage that matches the screen:
+
+- one memory cell per bulb
+- and each cell stores just **1 bit**: `0` or `1`
+
+Then I can decide what appears:
+
+- `0` → that bulb stays off  
+- `1` → that bulb lights up
+
+So if I store a `1` in the cell that corresponds to a specific position, that position lights up.
+
+This is the simplest possible image system:
+
+- it’s basically **black and white**
+- or more precisely: **off/on**
+
+And yet, it’s enough to draw shapes, letters, patterns… even simple animations if you change the bits over time.
+
+This is the idea behind thinking of image memory as a **map**:
+
+> a region of memory where each stored bit controls a point on the screen.
+
+## The limitation: only two “colors”
+
+But this bulb screen has a hard limitation:
+
+A bit only gives two choices.
+
+So you don’t get real color. You only get:
+- dark vs light
+- background vs foreground
+
+To go beyond that, each “bulb” needs more than just on/off.
+
+It needs a way to represent **different colors and intensities**.
+
+## Pixels: each tiny cell becomes a color unit
+
+This is where the idea of a **pixel** becomes important.
+
+Instead of thinking “one bulb that is either off or on”, we think:
+
+> each cell on the screen is a pixel that can take many colors.
+
+And to do that, we store *more bits per pixel*.
+
+## RGB: building color from three channels
+
+A common model is **RGB**:
+
+- **R** = Red intensity
+- **G** = Green intensity
+- **B** = Blue intensity
+
+Each channel is usually stored in **1 byte**:
+
+- 0 = none of that color
+- 255 = maximum intensity of that color
+
+So one pixel often takes:
+
+- 1 byte for Red
+- 1 byte for Green
+- 1 byte for Blue
+
+That’s **3 bytes per pixel** (24 bits).
+
+And now the “screen memory” becomes:
+
+> a big block of memory where each pixel’s position maps to three stored bytes (R, G, B).
+
+## From bitmaps to real images
+
+So we have a progression:
+
+### 1-bit images (monochrome)
+- 1 bit per pixel
+- off/on
+- very compact
+- very limited
+
+### 24-bit images (RGB)
+- 24 bits per pixel (3 bytes)
+- millions of colors
+- heavier storage, but far richer images
+
+## The same lesson keeps repeating
+
+Just like with text and numbers:
+
+> The computer is still only storing patterns of bits.
+
+What changes is the interpretation:
+
+- in text, bits become characters
+- in numbers, bits become values
+- in images, bits become **a grid of pixels**, and each pixel becomes **color information**
+
+It’s not that the computer “stores an image” like we see it.
+
+It stores a *recipe* — a structured chunk of memory — that a display system can translate into light.
