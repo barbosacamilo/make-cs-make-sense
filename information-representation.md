@@ -365,3 +365,60 @@ What changes is the interpretation:
 It’s not that the computer “stores an image” like we see it.
 
 It stores a *recipe* — a structured chunk of memory — that a display system can translate into light.
+
+---
+
+## Sound Representation
+
+What made sound feel different from text or images is that sound is not “a thing sitting still”.
+Sound is a **process**: a wave that changes over time.
+
+### Sound is air pressure changing
+In the real world, sound is a wave traveling through air (or any medium).  
+Air particles push and pull on each other, creating regions of higher and lower pressure that move forward.
+
+When we say a sound is “louder”, what we usually mean is:
+
+- the pressure changes are **bigger**
+- the wave has **greater amplitude**
+
+### The computer stores measurements, not the wave itself
+A sound wave in real life is **analog**: it can change smoothly and continuously.
+
+But a computer stores discrete values (bits), so it can’t store the wave as a perfect continuous curve.
+
+So it does something very practical:
+
+> It measures the wave’s amplitude at regular moments in time, and stores those measurements as numbers.
+
+You can think of it like taking a “snapshot” of the wave again and again.
+
+This is called **sampling**.
+
+### Sampling rate: how many measurements per second
+We choose how often we measure the wave.  
+That choice is the **sample rate**.
+
+- 8000 samples per second means: “measure the amplitude 8000 times every second”
+- that’s one measurement every 1/8000 of a second
+
+For human speech, 8000 samples per second can be enough for the voice to be understandable and recognizable.  
+It’s a practical compromise between quality and storage/transmission cost (which is why telephones used it for years).
+
+### More samples per second captures more detail
+The more frequently we measure:
+
+- the more accurately we capture fast changes in the wave
+- and the closer the reconstructed sound will be to the original
+
+That’s why music systems tend to use higher sample rates (like 44,100 samples per second for CDs): music contains more detail that we can notice.
+
+### A small but important detail: it’s not only “how many measurements”
+There are *two* dials that control quality:
+
+1. **How often we measure** (sample rate)
+2. **How precise each measurement is** (how many bits we use per sample)
+
+So quality improves not only by measuring more times per second, but also by storing each measurement with more precision.
+
+In short: sound storage is like turning a moving wave into a long list of numbers—one number per instant—so the computer can later rebuild a wave from that list and push it back out through a speaker.
